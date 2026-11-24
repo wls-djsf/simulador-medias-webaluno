@@ -1,5 +1,5 @@
 /**
- * WebAluno - Simulador de Médias e Aprovação
+ * Simulador de Médias e Aprovação
  * Projetado com foco em IHC (Heurísticas de Nielsen, Feedback Imediato e Modelo Mental Transparente)
  */
 
@@ -7,36 +7,34 @@ const MODALITIES = {
   presencial: {
     id: 'presencial',
     name: 'Modalidade Presencial',
-    requiresFrequency: true,
     minAverage: 6.0,
-    minFrequency: 75,
     components: [
       {
         code: 'NT',
         name: 'Nota TEAS (NT)',
         weight: 2,
-        description: 'Peso 2 (vale 20% da média = até 2,0 pts)',
+        description: 'Peso 2 (multiplicada por 2 na fórmula)',
         defaultGrade: 8.0
       },
       {
         code: 'AP',
         name: 'Avaliação Professor (AP)',
         weight: 2,
-        description: 'Peso 2 (vale 20% da média = até 2,0 pts)',
+        description: 'Peso 2 (multiplicada por 2 na fórmula)',
         defaultGrade: 7.5
       },
       {
         code: 'AF',
         name: 'Avaliação Final (AF)',
         weight: 3,
-        description: 'Peso 3 (vale 30% da média = até 3,0 pts)',
+        description: 'Peso 3 (multiplicada por 3 na fórmula)',
         defaultGrade: 6.5
       },
       {
         code: 'AI',
         name: 'Avaliação Integrada (AI)',
         weight: 3,
-        description: 'Peso 3 (vale 30% da média = até 3,0 pts)',
+        description: 'Peso 3 (multiplicada por 3 na fórmula)',
         defaultGrade: 7.0
       }
     ]
@@ -44,29 +42,27 @@ const MODALITIES = {
   online: {
     id: 'online',
     name: 'Modalidade On-Line (EAD)',
-    requiresFrequency: false,
     minAverage: 6.0,
-    minFrequency: 0,
     components: [
       {
         code: 'NT',
         name: 'Nota TEAS (NT)',
         weight: 3,
-        description: 'Peso 3 (vale 30% da média = até 3,0 pts)',
+        description: 'Peso 3 (multiplicada por 3 na fórmula)',
         defaultGrade: 8.0
       },
       {
         code: 'FD',
         name: 'Fórum de Discussão (FD)',
         weight: 1,
-        description: 'Peso 1 (vale 10% da média = até 1,0 pt)',
+        description: 'Peso 1 (multiplicada por 1 na fórmula)',
         defaultGrade: 9.0
       },
       {
         code: 'AF',
         name: 'Avaliação Final (AF)',
         weight: 6,
-        description: 'Peso 6 (vale 60% da média = até 6,0 pts)',
+        description: 'Peso 6 (multiplicada por 6 na fórmula)',
         defaultGrade: 6.0
       }
     ]
@@ -88,12 +84,6 @@ const state = {
       FD: { value: 9.0, unknown: false },
       AF: { value: 6.0, unknown: false }
     }
-  },
-  frequency: {
-    mode: 'percent', // 'percent' ou 'classes'
-    percent: 85,
-    totalClasses: 80,
-    absences: 12
   }
 };
 
@@ -113,21 +103,7 @@ const els = {
   tabOnline: document.getElementById('tab-online'),
   painelCalculo: document.getElementById('painel-calculo'),
   gradesList: document.getElementById('grades-list'),
-  frequencyCard: document.getElementById('frequency-card'),
   headerFreqRule: document.getElementById('header-freq-rule'),
-
-  // Frequência
-  freqStatusPill: document.getElementById('freq-status-pill'),
-  freqModePercent: document.getElementById('freq-mode-percent'),
-  freqModeClasses: document.getElementById('freq-mode-classes'),
-  freqPanelPercent: document.getElementById('freq-panel-percent'),
-  freqPanelClasses: document.getElementById('freq-panel-classes'),
-  inputFreqPercent: document.getElementById('input-freq-percent'),
-  sliderFreqPercent: document.getElementById('slider-freq-percent'),
-  inputTotalAulas: document.getElementById('input-total-aulas'),
-  inputTotalFaltas: document.getElementById('input-total-faltas'),
-  maxFaltasHint: document.getElementById('max-faltas-hint'),
-  freqFeedbackBox: document.getElementById('freq-feedback-box'),
 
   // Resultado Hero
   resultHeroCard: document.getElementById('result-hero-card'),
@@ -148,7 +124,6 @@ const els = {
   formulaSubstitutedNum: document.getElementById('formula-substituted-num'),
   formulaMultipliedNum: document.getElementById('formula-multiplied-num'),
   formulaFinalStep: document.getElementById('formula-final-step'),
-  pointsSlicesList: document.getElementById('points-slices-list'),
 
   // Botões de ação rápida e Modal
   btnQuantoPreciso: document.getElementById('btn-quanto-preciso'),
@@ -171,8 +146,6 @@ function renderGradeInputs() {
 
   modality.components.forEach((comp) => {
     const gradeData = currentGrades[comp.code];
-    const maxPointsInAverage = (comp.weight).toFixed(1).replace('.', ',');
-    const currentPointsInAverage = formatBR((gradeData.value * comp.weight) / 10, 2);
 
     const card = document.createElement('div');
     card.className = `grade-item-card ${gradeData.unknown ? 'is-unknown' : ''}`;
@@ -249,11 +222,6 @@ function renderGradeInputs() {
             <span>10</span>
           </div>
         </div>
-
-        <div class="contribution-pill" id="contrib-pill-${comp.code}">
-          <span>Soma na média:</span>
-          <strong id="contrib-val-${comp.code}">+${currentPointsInAverage} de ${maxPointsInAverage} pts</strong>
-        </div>
       </div>
 
       <div class="unknown-placeholder-msg" id="unknown-msg-${comp.code}">
@@ -280,14 +248,13 @@ function attachGradeCardListeners() {
         state.grades[state.currentModality][code].value = 0;
         const slider = document.getElementById(`slider-grade-${code}`);
         if (slider) slider.value = 0;
-        updateCalculationsOnly(code);
+        updateCalculationsOnly();
         return;
       }
       let parsed = parseFloat(raw);
       if (Number.isNaN(parsed)) parsed = 0;
       parsed = clamp(parsed, 0, 10);
 
-      // Se o usuário digitou algo maior que 10, corrige no campo imediatamente
       if (parseFloat(raw) > 10 || parseFloat(raw) < 0) {
         e.target.value = parsed;
       }
@@ -296,7 +263,7 @@ function attachGradeCardListeners() {
       const slider = document.getElementById(`slider-grade-${code}`);
       if (slider) slider.value = parsed;
 
-      updateCalculationsOnly(code);
+      updateCalculationsOnly();
     });
 
     input.addEventListener('blur', (e) => {
@@ -316,7 +283,7 @@ function attachGradeCardListeners() {
       const numInput = document.getElementById(`input-grade-${code}`);
       if (numInput) numInput.value = Number(val.toFixed(1));
 
-      updateCalculationsOnly(code);
+      updateCalculationsOnly();
     });
   });
 
@@ -336,7 +303,7 @@ function attachGradeCardListeners() {
       if (numInput) numInput.value = Number(next.toFixed(1));
       if (slider) slider.value = next;
 
-      updateCalculationsOnly(code);
+      updateCalculationsOnly();
     });
   });
 
@@ -352,37 +319,30 @@ function attachGradeCardListeners() {
         card.classList.toggle('is-unknown', isUnknown);
       }
 
-      updateCalculationsOnly(code);
+      updateCalculationsOnly();
     });
   });
 }
 
 /**
- * Atualiza todas as contas, o quadro passo a passo, as fatias e o resultado final sem recriar os inputs (preserva o foco)
+ * Atualiza todas as contas, o quadro passo a passo e o resultado final
  */
 function updateCalculationsOnly() {
   const modality = MODALITIES[state.currentModality];
   const currentGrades = state.grades[state.currentModality];
 
-  let knownWeightedSum = 0; // Soma de (Nota * Peso) das notas que o aluno já tem
-  let unknownWeightSum = 0; // Soma dos pesos das notas marcadas como "Ainda não tenho"
+  let knownWeightedSum = 0;
+  let unknownWeightSum = 0;
   const unknownComponents = [];
 
   modality.components.forEach((comp) => {
     const item = currentGrades[comp.code];
-    const maxPoints = formatBR(comp.weight, 1);
 
     if (item.unknown) {
       unknownWeightSum += comp.weight;
       unknownComponents.push(comp);
     } else {
-      const weighted = item.value * comp.weight;
-      knownWeightedSum += weighted;
-
-      const contribEl = document.getElementById(`contrib-val-${comp.code}`);
-      if (contribEl) {
-        contribEl.textContent = `+${formatBR(weighted / 10, 2)} de ${maxPoints} pts`;
-      }
+      knownWeightedSum += item.value * comp.weight;
     }
   });
 
@@ -413,77 +373,24 @@ function updateCalculationsOnly() {
     }
   });
 
-  // Atualiza Frequência (se Presencial)
-  const isFreqOk = updateFrequencyUI();
+  if (state.currentModality === 'presencial') {
+    els.headerFreqRule.innerHTML = `<strong>Presencial:</strong> Frequência Mínima de 75% nas aulas`;
+  } else {
+    els.headerFreqRule.innerHTML = `<strong>Modalidade On-Line:</strong> Aprovação com Média Final &ge; 6,0`;
+  }
 
   // Atualiza Card Hero de Resultado
   updateHeroResult({
     modality,
     currentAverage,
-    knownWeightedSum,
     hasUnknowns,
     unknownComponents,
     requiredGradeOnUnknowns,
-    missingWeightedPoints,
-    isFreqOk
+    missingWeightedPoints
   });
 
   // Atualiza Quadro Pedagógico Passo a Passo
-  updateStepByStepBoard(modality, currentGrades, knownWeightedSum, currentAverage, requiredGradeOnUnknowns);
-
-  // Atualiza Fatias de Pontos
-  updatePointsSlices(modality, currentGrades);
-}
-
-/**
- * Atualiza a interface e cálculos da seção de Frequência (75%)
- */
-function updateFrequencyUI() {
-  const modality = MODALITIES[state.currentModality];
-
-  if (!modality.requiresFrequency) {
-    els.frequencyCard.classList.add('hidden');
-    els.headerFreqRule.innerHTML = `<strong>Modalidade On-Line:</strong> Aprovação baseada na Média Final &ge; 6,0`;
-    return true;
-  }
-
-  els.frequencyCard.classList.remove('hidden');
-  els.headerFreqRule.innerHTML = `<strong>Presencial:</strong> Frequência Mínima de 75% nas aulas`;
-
-  let freqPercent = state.frequency.percent;
-
-  if (state.frequency.mode === 'classes') {
-    const total = Math.max(1, state.frequency.totalClasses);
-    const faltas = clamp(state.frequency.absences, 0, total);
-    const presencas = total - faltas;
-    freqPercent = Math.round((presencas / total) * 1000) / 10;
-    state.frequency.percent = freqPercent;
-
-    const maxFaltasPermitidas = Math.floor(total * 0.25);
-    const saldoFaltas = maxFaltasPermitidas - faltas;
-
-    if (saldoFaltas >= 0) {
-      els.maxFaltasHint.textContent = `Limite de 25%: até ${maxFaltasPermitidas} faltas (você ainda pode faltar ${saldoFaltas})`;
-    } else {
-      els.maxFaltasHint.textContent = `Limite de 25%: até ${maxFaltasPermitidas} faltas (você ultrapassou em ${Math.abs(saldoFaltas)})`;
-    }
-  }
-
-  const isApprovedFreq = freqPercent >= modality.minFrequency;
-  const formattedFreq = formatBR(freqPercent, freqPercent % 1 === 0 ? 0 : 1);
-
-  els.freqStatusPill.textContent = `${formattedFreq}% • ${isApprovedFreq ? 'Aprovado na Frequência' : 'Abaixo de 75%'}`;
-  els.freqStatusPill.className = `header-helper-badge ${isApprovedFreq ? 'status-ok' : 'status-fail'}`;
-
-  if (isApprovedFreq) {
-    els.freqFeedbackBox.className = 'freq-feedback-box ok';
-    els.freqFeedbackBox.innerHTML = `✅ Sua frequência está em <strong>${formattedFreq}%</strong>, cumprindo o mínimo exigido de <strong>75%</strong>.`;
-  } else {
-    els.freqFeedbackBox.className = 'freq-feedback-box fail';
-    els.freqFeedbackBox.innerHTML = `⚠️ Atenção: Sua frequência está em <strong>${formattedFreq}%</strong> (abaixo do mínimo obrigatório de <strong>75%</strong> na modalidade presencial).`;
-  }
-
-  return isApprovedFreq;
+  updateStepByStepBoard(modality, currentGrades);
 }
 
 /**
@@ -495,23 +402,20 @@ function updateHeroResult({
   hasUnknowns,
   unknownComponents,
   requiredGradeOnUnknowns,
-  missingWeightedPoints,
-  isFreqOk
+  missingWeightedPoints
 }) {
   els.resultModalityTag.textContent = modality.name;
   els.finalAverageValue.textContent = formatBR(currentAverage, 2);
 
-  // Largura da barra de progresso (0 a 10 -> 0% a 100%)
   const progressPercent = clamp((currentAverage / 10) * 100, 0, 100);
   els.averageProgressFill.style.width = `${progressPercent}%`;
 
   const diff = currentAverage - modality.minAverage;
 
   if (hasUnknowns) {
-    // Modo Simulação de Meta ("Ainda não tenho essa nota")
     els.resultHeroCard.className = 'result-hero-card status-simulating';
     els.resultBadgeText.textContent = 'SIMULANDO QUANTO FALTA PARA PASSAR';
-    els.scoreCaption.textContent = 'PONTOS JÁ GARANTIDOS NA MÉDIA';
+    els.scoreCaption.textContent = 'MÉDIA PARCIAL GARANTIDA';
     els.goalDiffLabel.textContent = 'Falta p/ Média 6,0';
     els.goalDiffValue.textContent = missingWeightedPoints > 0
       ? `${formatBR(missingWeightedPoints / 10, 2)} pts`
@@ -521,19 +425,19 @@ function updateHeroResult({
     const namesList = unknownComponents.map((c) => `${c.code} (peso ${c.weight})`).join(' e ');
 
     if (missingWeightedPoints <= 0) {
-      els.neededTitle.textContent = 'Você já atingiu 6,0 pontos garantidos!';
+      els.neededTitle.textContent = 'Você já atingiu 6,0 na média!';
       els.neededDescription.innerHTML = `Mesmo sem somar a nota de <strong>${namesList}</strong>, você já acumulou <strong>${formatBR(currentAverage, 2)}</strong> na média final.`;
-      els.resultExplanationText.innerHTML = `Excelente! Suas notas já lançadas garantem os <strong>6,0 pontos</strong> necessários na média.`;
+      els.resultExplanationText.innerHTML = `Excelente! Suas notas já lançadas garantem a média mínima <strong>6,0</strong>.`;
     } else if (requiredGradeOnUnknowns > 10) {
-      els.neededTitle.textContent = 'Atenção: Pontuação necessária ultrapassa 10,0';
-      els.neededDescription.innerHTML = `Faltam <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> para chegar a 6,0. Seria necessário tirar <strong>${formatBR(requiredGradeOnUnknowns, 2)}</strong> em <strong>${namesList}</strong>.`;
-      els.resultExplanationText.innerHTML = `Com as notas atuais você tem <strong>${formatBR(currentAverage, 2)}</strong> garantidos. Desmarque <em>"Ainda não tenho"</em> para simular diferentes notas.`;
+      els.neededTitle.textContent = 'Atenção: Nota necessária ultrapassa 10,0';
+      els.neededDescription.innerHTML = `Faltam <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> na média para chegar a 6,0. Seria necessário tirar <strong>${formatBR(requiredGradeOnUnknowns, 2)}</strong> em <strong>${namesList}</strong>.`;
+      els.resultExplanationText.innerHTML = `Com as notas atuais sua média parcial é <strong>${formatBR(currentAverage, 2)}</strong>. Desmarque <em>"Ainda não tenho"</em> para simular diferentes notas.`;
     } else {
       els.neededTitle.textContent = unknownComponents.length === 1
         ? `Você precisa tirar ${formatBR(requiredGradeOnUnknowns, 1)} em ${unknownComponents[0].code} para fechar com 6,0!`
         : `Você precisa de média ${formatBR(requiredGradeOnUnknowns, 1)} nas avaliações pendentes!`;
-      els.neededDescription.innerHTML = `Você já garantiu <strong>${formatBR(currentAverage, 2)} pontos</strong> na Média Final e faltam apenas <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> para alcançar 6,00.`;
-      els.resultExplanationText.innerHTML = `Para conquistar os <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> que faltam na média, basta tirar nota <strong>${formatBR(requiredGradeOnUnknowns, 1)}</strong> (de 0 a 10) em <strong>${namesList}</strong>.`;
+      els.neededDescription.innerHTML = `Sua média parcial atual é <strong>${formatBR(currentAverage, 2)}</strong> e faltam <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> para alcançar 6,00.`;
+      els.resultExplanationText.innerHTML = `Para alcançar a Média Final <strong>6,0</strong>, basta tirar nota <strong>${formatBR(requiredGradeOnUnknowns, 1)}</strong> (de 0 a 10) em <strong>${namesList}</strong>.`;
     }
     return;
   }
@@ -552,16 +456,12 @@ function updateHeroResult({
     els.goalDiffValue.textContent = `${formatBR(diff, 2)}`;
   }
 
-  if (isGradeApproved && isFreqOk) {
+  if (isGradeApproved) {
     els.resultHeroCard.className = 'result-hero-card status-approved';
-    els.resultBadgeText.textContent = 'APROVADO NO SEMESTRE';
-    els.resultExplanationText.innerHTML = modality.requiresFrequency
-      ? `🎉 <strong>Parabéns!</strong> Sua Média Final é <strong>${formatBR(currentAverage, 2)}</strong> (mínimo 6,0) e sua frequência está acima dos 75% exigidos.`
+    els.resultBadgeText.textContent = 'APROVADO POR NOTA';
+    els.resultExplanationText.innerHTML = state.currentModality === 'presencial'
+      ? `🎉 <strong>Parabéns!</strong> Sua Média Final é <strong>${formatBR(currentAverage, 2)}</strong> (atingindo o mínimo de 6,0). Lembre-se apenas de manter a frequência mínima de 75% nas aulas.`
       : `🎉 <strong>Parabéns!</strong> Sua Média Final na modalidade On-Line é <strong>${formatBR(currentAverage, 2)}</strong>, atingindo o mínimo de 6,0 para aprovação.`;
-  } else if (isGradeApproved && !isFreqOk) {
-    els.resultHeroCard.className = 'result-hero-card status-failed';
-    els.resultBadgeText.textContent = 'ATENÇÃO: REPROVADO POR FREQUÊNCIA';
-    els.resultExplanationText.innerHTML = `⚠️ Sua Média Final (<strong>${formatBR(currentAverage, 2)}</strong>) é suficiente (&ge; 6,0), porém sua frequência está abaixo do mínimo obrigatório de <strong>75%</strong>.`;
   } else {
     els.resultHeroCard.className = 'result-hero-card status-failed';
     els.resultBadgeText.textContent = 'MÉDIA ABAIXO DE 6,0';
@@ -587,7 +487,6 @@ function updateStepByStepBoard(modality, currentGrades) {
     lettersParts.push(`<span class="${chipClass}">(${comp.code} &times; ${comp.weight})</span>`);
 
     if (item.unknown) {
-      // Quando marcada como "Ainda não tenho"
       substitutedParts.push(`<span class="${chipClass}">(? &times; ${comp.weight})</span>`);
       multipliedParts.push(`<span class="${chipClass}">0,0</span>`);
     } else {
@@ -612,39 +511,11 @@ function updateStepByStepBoard(modality, currentGrades) {
 }
 
 /**
- * Atualiza a visualização de "Fatias de Pontos" (Quanto cada nota contribui direto na média)
- */
-function updatePointsSlices(modality, currentGrades) {
-  els.pointsSlicesList.innerHTML = '';
-
-  modality.components.forEach((comp) => {
-    const item = currentGrades[comp.code];
-    const maxPoints = comp.weight; // Peso 2 -> 2.0 pts, Peso 3 -> 3.0 pts, Peso 6 -> 6.0 pts
-    const earnedPoints = item.unknown ? 0 : (item.value * comp.weight) / 10;
-    const fillPercent = clamp((earnedPoints / maxPoints) * 100, 0, 100);
-
-    const row = document.createElement('div');
-    row.className = 'slice-row';
-    row.innerHTML = `
-      <div class="slice-header">
-        <span><strong>${comp.name}</strong> • ${ item.unknown ? 'Ainda não lançada' : `Nota ${formatBR(item.value, 1)} &times; 0,${comp.weight}` }</span>
-        <span><strong>+${formatBR(earnedPoints, 2)} pt</strong> de ${formatBR(maxPoints, 1)} possíveis</span>
-      </div>
-      <div class="slice-bar-bg">
-        <div class="slice-bar-fill" style="width: ${fillPercent}%;"></div>
-      </div>
-    `;
-    els.pointsSlicesList.appendChild(row);
-  });
-}
-
-/**
  * Alterna entre Modalidade Presencial e Modalidade On-Line
  */
 function switchModality(newModality) {
   if (!MODALITIES[newModality]) return;
 
-  // Preserva notas em comum (NT e AF) para melhor experiência do usuário (UX)
   const prevModality = state.currentModality;
   if (prevModality !== newModality) {
     ['NT', 'AF'].forEach((sharedCode) => {
@@ -670,58 +541,11 @@ function switchModality(newModality) {
 }
 
 /**
- * Inicializa todos os ouvintes globais (Abas, Frequência, Ações Rápidas e Modal)
+ * Inicializa todos os ouvintes globais (Abas, Ações Rápidas e Modal)
  */
 function initEvents() {
   els.tabPresencial.addEventListener('click', () => switchModality('presencial'));
   els.tabOnline.addEventListener('click', () => switchModality('online'));
-
-  // Alternância do modo de frequência (% direta vs cálculo por faltas)
-  els.freqModePercent.addEventListener('click', () => {
-    state.frequency.mode = 'percent';
-    els.freqModePercent.classList.add('active');
-    els.freqModeClasses.classList.remove('active');
-    els.freqPanelPercent.classList.remove('hidden');
-    els.freqPanelClasses.classList.add('hidden');
-    els.inputFreqPercent.value = Math.round(state.frequency.percent);
-    els.sliderFreqPercent.value = Math.round(state.frequency.percent);
-    updateCalculationsOnly();
-  });
-
-  els.freqModeClasses.addEventListener('click', () => {
-    state.frequency.mode = 'classes';
-    els.freqModeClasses.classList.add('active');
-    els.freqModePercent.classList.remove('active');
-    els.freqPanelClasses.classList.remove('hidden');
-    els.freqPanelPercent.classList.add('hidden');
-    updateCalculationsOnly();
-  });
-
-  // Inputs de frequência (%)
-  els.inputFreqPercent.addEventListener('input', (e) => {
-    const val = clamp(parseFloat(e.target.value) || 0, 0, 100);
-    state.frequency.percent = val;
-    els.sliderFreqPercent.value = val;
-    updateCalculationsOnly();
-  });
-
-  els.sliderFreqPercent.addEventListener('input', (e) => {
-    const val = clamp(parseFloat(e.target.value) || 0, 0, 100);
-    state.frequency.percent = val;
-    els.inputFreqPercent.value = val;
-    updateCalculationsOnly();
-  });
-
-  // Inputs de aulas e faltas
-  els.inputTotalAulas.addEventListener('input', (e) => {
-    state.frequency.totalClasses = Math.max(1, parseInt(e.target.value, 10) || 1);
-    updateCalculationsOnly();
-  });
-
-  els.inputTotalFaltas.addEventListener('input', (e) => {
-    state.frequency.absences = Math.max(0, parseInt(e.target.value, 10) || 0);
-    updateCalculationsOnly();
-  });
 
   // Botão "Quanto preciso na Prova Final?"
   els.btnQuantoPreciso.addEventListener('click', () => {
@@ -748,11 +572,6 @@ function initEvents() {
         AF: { value: 6.0, unknown: false },
         AI: { value: 6.0, unknown: false }
       };
-      state.frequency.percent = 85;
-      state.frequency.totalClasses = 80;
-      state.frequency.absences = 12;
-      els.inputFreqPercent.value = 85;
-      els.sliderFreqPercent.value = 85;
     } else {
       state.grades.online = {
         NT: { value: 7.5, unknown: false },

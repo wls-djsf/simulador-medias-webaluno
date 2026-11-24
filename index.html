@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebAluno | Simulador de Médias e Aprovação</title>
+  <title>Simulador de Médias e Aprovação</title>
   <meta name="description" content="Simulador visual e passo a passo de Média Final para alunos (Modalidade Presencial e On-Line). Substitua suas notas e descubra na hora sua média ou quanto precisa para passar." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,22 +14,14 @@
   <!-- Link de Pulo para Acessibilidade (IHC / WCAG) -->
   <a href="#simulador-principal" class="skip-link">Pular para o simulador de notas</a>
 
-  <!-- Cabeçalho inspirado no Portal WebAluno -->
+  <!-- Cabeçalho -->
   <header class="webaluno-header">
     <div class="header-banner">
       <div class="container header-banner-inner">
         <div class="brand-group">
-          <div class="crest-badge" aria-hidden="true">
-            <span class="crest-top">UNI</span>
-            <span class="crest-main">ÍTALO</span>
-          </div>
-          <div class="brand-divider" aria-hidden="true"></div>
           <div class="portal-title-group">
-            <svg class="cap-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-            </svg>
             <div>
-              <h1 class="portal-title">WebAluno <span class="portal-subtitle-pill">Simulador de Notas</span></h1>
+              <h1 class="portal-title">Simulador de Notas</h1>
               <p class="portal-tagline">Entenda sua média passo a passo e simule quanto precisa para passar</p>
             </div>
           </div>
@@ -47,7 +39,7 @@
       </div>
     </div>
 
-    <!-- Faixa Verde-Petróleo Identidade WebAluno -->
+    <!-- Faixa Verde-Petróleo -->
     <div class="student-Context-bar">
       <div class="container student-bar-inner">
         <div class="student-info-items">
@@ -71,7 +63,7 @@
   </header>
 
   <main id="simulador-principal" class="container main-content">
-    <!-- Barra de Aviso Estilo WebAluno -->
+    <!-- Barra de Aviso -->
     <section class="aviso-banner" aria-label="Escolha da modalidade da disciplina">
       <div class="aviso-icon-box" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
@@ -84,7 +76,7 @@
       </div>
     </section>
 
-    <!-- Seletor de Modalidade (Presencial vs On-Line) com grande Affordance -->
+    <!-- Seletor de Modalidade (Presencial vs On-Line) -->
     <section class="modality-selector" role="tablist" aria-label="Modalidade da disciplina">
       <button
         type="button"
@@ -99,7 +91,7 @@
           <span class="modality-icon" aria-hidden="true">🏫</span>
           <div class="modality-titles">
             <span class="modality-name">Disciplina Presencial</span>
-            <span class="modality-badge">4 Avaliações + Frequência 75%</span>
+            <span class="modality-badge">4 Avaliações (NT, AP, AF e AI)</span>
           </div>
           <span class="modality-check" aria-hidden="true">✓</span>
         </div>
@@ -121,7 +113,7 @@
           <span class="modality-icon" aria-hidden="true">💻</span>
           <div class="modality-titles">
             <span class="modality-name">Modalidade On-Line (EAD)</span>
-            <span class="modality-badge">3 Avaliações (Sem cálculo de faltas)</span>
+            <span class="modality-badge">3 Avaliações (NT, FD e AF)</span>
           </div>
           <span class="modality-check" aria-hidden="true">✓</span>
         </div>
@@ -134,7 +126,7 @@
     <!-- Grid Principal: Esquerda (Substituição de Notas) | Direita (Quadro da Conta + Resultado) -->
     <div id="painel-calculo" class="calculator-grid" role="tabpanel" aria-labelledby="tab-presencial">
       
-      <!-- COLUNA ESQUERDA: Entrada de Notas e Frequência -->
+      <!-- COLUNA ESQUERDA: Entrada de Notas -->
       <div class="inputs-column">
         <div class="section-card">
           <div class="section-header-bar">
@@ -154,82 +146,12 @@
             </div>
           </div>
         </div>
-
-        <!-- Card de Frequência (Exibido apenas na Modalidade Presencial) -->
-        <div id="frequency-card" class="section-card">
-          <div class="section-header-bar">
-            <h2>PASSO 3: FREQUÊNCIA NAS AULAS (MÍNIMO 75%)</h2>
-            <span id="freq-status-pill" class="header-helper-badge status-ok">85% • OK</span>
-          </div>
-          <div class="section-body">
-            <div class="freq-mode-switch">
-              <button type="button" id="freq-mode-percent" class="freq-tab active">Já sei minha % de presença</button>
-              <button type="button" id="freq-mode-classes" class="freq-tab">Calcular pelas minhas faltas</button>
-            </div>
-
-            <!-- Modo 1: Porcentagem direta -->
-            <div id="freq-panel-percent" class="freq-panel">
-              <div class="freq-slider-row">
-                <label for="input-freq-percent" class="freq-label">
-                  Sua presença atual no WebAluno:
-                </label>
-                <div class="freq-number-box">
-                  <input
-                    type="number"
-                    id="input-freq-percent"
-                    min="0"
-                    max="100"
-                    step="1"
-                    value="85"
-                    aria-label="Porcentagem de frequência nas aulas"
-                  />
-                  <span class="unit-symbol">%</span>
-                </div>
-              </div>
-              <input
-                type="range"
-                id="slider-freq-percent"
-                min="0"
-                max="100"
-                step="1"
-                value="85"
-                class="grade-slider freq-slider"
-                aria-label="Deslize para ajustar a porcentagem de presença"
-              />
-              <div class="freq-scale-marks" aria-hidden="true">
-                <span>0%</span>
-                <span class="mark-cutoff">75% (Mínimo para passar)</span>
-                <span>100%</span>
-              </div>
-            </div>
-
-            <!-- Modo 2: Cálculo por Aulas e Faltas -->
-            <div id="freq-panel-classes" class="freq-panel hidden">
-              <div class="classes-inputs-grid">
-                <div class="class-input-group">
-                  <label for="input-total-aulas">Total de aulas da matéria no semestre</label>
-                  <input type="number" id="input-total-aulas" min="1" max="300" value="80" />
-                  <span class="field-hint">Ex.: 40, 60 ou 80 aulas</span>
-                </div>
-                <div class="class-input-group">
-                  <label for="input-total-faltas">Quantas aulas você faltou?</label>
-                  <input type="number" id="input-total-faltas" min="0" max="300" value="12" />
-                  <span class="field-hint" id="max-faltas-hint">Você pode faltar até 20 aulas (25%)</span>
-                </div>
-              </div>
-            </div>
-
-            <div id="freq-feedback-box" class="freq-feedback-box ok" role="status" aria-live="polite">
-              Sua frequência está em <strong>85%</strong> (acima do mínimo exigido de 75%).
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- COLUNA DIREITA: Quadro Visual da Fórmula Substituída + Resultado Final -->
       <div class="results-column">
         
-        <!-- Card Principal de Resultado estilo Banner UniÍtalo -->
+        <!-- Card Principal de Resultado -->
         <div id="result-hero-card" class="result-hero-card status-approved" role="region" aria-live="polite" aria-label="Resultado da Simulação">
           <div class="result-hero-top">
             <span id="result-badge" class="result-status-pill">
@@ -271,7 +193,7 @@
           </div>
 
           <p id="result-explanation-text" class="result-explanation-text">
-            Parabéns! Com essas notas você atinge média <strong>7,50</strong> (acima de 6,0) e cumpre a frequência mínima de 75%.
+            Parabéns! Com essas notas você atinge média <strong>7,50</strong> (acima do mínimo exigido de 6,0).
           </p>
 
           <!-- Painel Especial: Quanto preciso tirar nas provas pendentes? -->
@@ -343,19 +265,6 @@
               </div>
             </div>
 
-            <!-- Resumo em Fatias de Pontos (O jeito mais fácil de entender!) -->
-            <div class="points-breakdown-box">
-              <h3 class="breakdown-title">
-                💡 Jeito ainda mais fácil de enxergar: Quantos pontos cada nota te deu
-              </h3>
-              <p class="breakdown-subtitle">
-                Como a soma é dividida por 10, cada avaliação vale uma fatia direta da sua Média Final (totalizando 10,0 pontos):
-              </p>
-              <div id="points-slices-list" class="points-slices-list">
-                <!-- Barrinhas individuais de contribuição de cada nota -->
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -380,23 +289,23 @@
             <h3>🏫 Na Modalidade Presencial</h3>
             <p class="modal-formula-tag"><code>((NT × 2) + (AP × 2) + (AF × 3) + (AI × 3)) ÷ 10</code></p>
             <ul class="modal-list">
-              <li><strong>NT — Nota TEAS (Peso 2 = 20%):</strong> Vale até <strong>2,0 pontos</strong> na sua média final. (Basta multiplicar sua nota por 0,2).</li>
-              <li><strong>AP — Avaliação Professor (Peso 2 = 20%):</strong> Vale até <strong>2,0 pontos</strong> na sua média final. (Basta multiplicar sua nota por 0,2).</li>
-              <li><strong>AF — Avaliação Final (Peso 3 = 30%):</strong> Vale até <strong>3,0 pontos</strong> na sua média final. (Basta multiplicar sua nota por 0,3).</li>
-              <li><strong>AI — Avaliação Integrada (Peso 3 = 30%):</strong> Vale até <strong>3,0 pontos</strong> na sua média final. (Basta multiplicar sua nota por 0,3).</li>
+              <li><strong>NT — Nota TEAS (Peso 2):</strong> Sua nota é multiplicada por 2.</li>
+              <li><strong>AP — Avaliação Professor (Peso 2):</strong> Sua nota é multiplicada por 2.</li>
+              <li><strong>AF — Avaliação Final (Peso 3):</strong> Sua nota é multiplicada por 3.</li>
+              <li><strong>AI — Avaliação Integrada (Peso 3):</strong> Sua nota é multiplicada por 3.</li>
             </ul>
-            <p class="modal-rule-note">Para passar: <strong>Média Final &ge; 6,0</strong> e <strong>Frequência &ge; 75%</strong>.</p>
+            <p class="modal-rule-note">Depois de somar tudo e dividir por 10: para passar, você precisa de <strong>Média Final &ge; 6,0</strong> e <strong>Frequência Mínima de 75%</strong> nas aulas.</p>
           </div>
 
           <div class="modal-box">
             <h3>💻 Na Modalidade On-Line</h3>
             <p class="modal-formula-tag"><code>((NT × 3) + (FD × 1) + (AF × 6)) ÷ 10</code></p>
             <ul class="modal-list">
-              <li><strong>NT — Nota TEAS (Peso 3 = 30%):</strong> Vale até <strong>3,0 pontos</strong> na sua média final. (Multiplique sua nota por 0,3).</li>
-              <li><strong>FD — Fórum de Discussão (Peso 1 = 10%):</strong> Vale até <strong>1,0 ponto</strong> na sua média final. (Multiplique sua nota por 0,1).</li>
-              <li><strong>AF — Avaliação Final (Peso 6 = 60%):</strong> É a prova que vale mais! Vale até <strong>6,0 pontos</strong> na sua média final. (Multiplique sua nota por 0,6).</li>
+              <li><strong>NT — Nota TEAS (Peso 3):</strong> Sua nota é multiplicada por 3.</li>
+              <li><strong>FD — Fórum de Discussão (Peso 1):</strong> Sua nota é multiplicada por 1.</li>
+              <li><strong>AF — Avaliação Final (Peso 6):</strong> É a prova com maior peso! Sua nota é multiplicada por 6.</li>
             </ul>
-            <p class="modal-rule-note">Para passar: <strong>Média Final &ge; 6,0</strong>.</p>
+            <p class="modal-rule-note">Depois de somar tudo e dividir por 10: para passar, você precisa de <strong>Média Final &ge; 6,0</strong>.</p>
           </div>
         </div>
 
