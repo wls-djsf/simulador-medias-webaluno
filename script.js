@@ -126,8 +126,6 @@ const els = {
   formulaFinalStep: document.getElementById('formula-final-step'),
 
   // Botões de ação rápida e Modal
-  btnQuantoPreciso: document.getElementById('btn-quanto-preciso'),
-  btnExemplo: document.getElementById('btn-exemplo'),
   btnLimpar: document.getElementById('btn-limpar'),
   btnComoFunciona: document.getElementById('btn-como-funciona'),
   modalAjuda: document.getElementById('modal-ajuda'),
@@ -373,12 +371,6 @@ function updateCalculationsOnly() {
     }
   });
 
-  if (state.currentModality === 'presencial') {
-    els.headerFreqRule.innerHTML = `<strong>Presencial:</strong> Frequência Mínima de 75% nas aulas`;
-  } else {
-    els.headerFreqRule.innerHTML = `<strong>Modalidade On-Line:</strong> Aprovação com Média Final &ge; 6,0`;
-  }
-
   // Atualiza Card Hero de Resultado
   updateHeroResult({
     modality,
@@ -546,42 +538,6 @@ function switchModality(newModality) {
 function initEvents() {
   els.tabPresencial.addEventListener('click', () => switchModality('presencial'));
   els.tabOnline.addEventListener('click', () => switchModality('online'));
-
-  // Botão "Quanto preciso na Prova Final?"
-  els.btnQuantoPreciso.addEventListener('click', () => {
-    if (state.currentModality === 'presencial') {
-      state.grades.presencial.NT.unknown = false;
-      state.grades.presencial.AP.unknown = false;
-      state.grades.presencial.AI.unknown = false;
-      state.grades.presencial.AF.unknown = true;
-    } else {
-      state.grades.online.NT.unknown = false;
-      state.grades.online.FD.unknown = false;
-      state.grades.online.AF.unknown = true;
-    }
-    renderGradeInputs();
-    updateCalculationsOnly();
-  });
-
-  // Botão "Ver Exemplo Prático"
-  els.btnExemplo.addEventListener('click', () => {
-    if (state.currentModality === 'presencial') {
-      state.grades.presencial = {
-        NT: { value: 8.0, unknown: false },
-        AP: { value: 7.0, unknown: false },
-        AF: { value: 6.0, unknown: false },
-        AI: { value: 6.0, unknown: false }
-      };
-    } else {
-      state.grades.online = {
-        NT: { value: 7.5, unknown: false },
-        FD: { value: 9.0, unknown: false },
-        AF: { value: 6.0, unknown: false }
-      };
-    }
-    renderGradeInputs();
-    updateCalculationsOnly();
-  });
 
   // Botão "Limpar Notas"
   els.btnLimpar.addEventListener('click', () => {
