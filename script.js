@@ -93,6 +93,11 @@ function formatBR(num, decimals = 1) {
   return Number(num).toFixed(decimals).replace('.', ',');
 }
 
+// Regra de arredondamento da faculdade (escala de 0,5 em 0,5 ponto: ex. 3,20 -> 3,0 | 8,10 -> 8,0)
+function roundUniversityAverage(avg) {
+  return Math.round((avg + 1e-9) * 2) / 2;
+}
+
 function clamp(val, min, max) {
   return Math.min(Math.max(val, min), max);
 }
@@ -344,12 +349,13 @@ function updateCalculationsOnly() {
     }
   });
 
-  const currentAverage = knownWeightedSum / 10;
+  const exactAverage = knownWeightedSum / 10;
+  const currentAverage = roundUniversityAverage(exactAverage);
   const hasUnknowns = unknownComponents.length > 0;
 
-  // Cálculo de quanto falta para atingir 6,0 (60 pontos na soma antes de dividir por 10)
-  const targetWeightedTotal = modality.minAverage * 10; // 60
-  const missingWeightedPoints = Math.max(0, targetWeightedTotal - knownWeightedSum);
+  // Cálculo de quanto falta para atingir 6,0
+  const missingPointsInAverage = Math.max(0, modality.minAverage - currentAverage);
+  const missingWeightedPoints = missingPointsInAverage * 10;
   const requiredGradeOnUnknowns = unknownWeightSum > 0
     ? missingWeightedPoints / unknownWeightSum
     : 0;
@@ -397,7 +403,7 @@ function updateHeroResult({
   missingWeightedPoints
 }) {
   els.resultModalityTag.textContent = modality.name;
-  els.finalAverageValue.textContent = formatBR(currentAverage, 2);
+  els.finalAverageValue.textContent = formatBR(currentAverage, 1);
 
   const progressPercent = clamp((currentAverage / 10) * 100, 0, 100);
   els.averageProgressFill.style.width = `${progressPercent}%`;
@@ -407,28 +413,28 @@ function updateHeroResult({
   if (hasUnknowns) {
     els.resultHeroCard.className = 'result-hero-card status-simulating';
     els.resultBadgeText.textContent = 'SIMULANDO QUANTO FALTA PARA PASSAR';
-    els.scoreCaption.textContent = 'MÉDIA PARCIAL GARANTIDA';
+    els.scoreCaption.textContent = 'MÉDIA PARCIAL';
     els.goalDiffLabel.textContent = 'Falta p/ Média 6,0';
     els.goalDiffValue.textContent = missingWeightedPoints > 0
-      ? `${formatBR(missingWeightedPoints / 10, 2)} pts`
-      : '0,00 pts';
+      ? `${formatBR(missingWeightedPoints / 10, 1)} pts`
+      : '0,0 pts';
 
     els.neededGradeBox.classList.remove('hidden');
     const namesList = unknownComponents.map((c) => `${c.code} (peso ${c.weight})`).join(' e ');
 
     if (missingWeightedPoints <= 0) {
       els.neededTitle.textContent = 'Você já atingiu 6,0 na média!';
-      els.neededDescription.innerHTML = `Mesmo sem somar a nota de <strong>${namesList}</strong>, você já acumulou <strong>${formatBR(currentAverage, 2)}</strong> na média final.`;
+      els.neededDescription.innerHTML = `Mesmo sem somar a nota de <strong>${namesList}</strong>, você já acumulou <strong>${formatBR(currentAverage, 1)}</strong> na média.`;
       els.resultExplanationText.innerHTML = `Excelente! Suas notas já lançadas garantem a média mínima <strong>6,0</strong>.`;
     } else if (requiredGradeOnUnknowns > 10) {
       els.neededTitle.textContent = 'Atenção: Nota necessária ultrapassa 10,0';
-      els.neededDescription.innerHTML = `Faltam <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> na média para chegar a 6,0. Seria necessário tirar <strong>${formatBR(requiredGradeOnUnknowns, 2)}</strong> em <strong>${namesList}</strong>.`;
-      els.resultExplanationText.innerHTML = `Com as notas atuais sua média parcial é <strong>${formatBR(currentAverage, 2)}</strong>. Desmarque <em>"Ainda não tenho"</em> para simular diferentes notas.`;
+      els.neededDescription.innerHTML = `Faltam <strong>${formatBR(missingWeightedPoints / 10, 1)} pontos</strong> na média para chegar a 6,0. Seria necessário tirar <strong>${formatBR(requiredGradeOnUnknowns, 1)}</strong> em <strong>${namesList}</strong>.`;
+      els.resultExplanationText.innerHTML = `Com as notas atuais sua média parcial é <strong>${formatBR(currentAverage, 1)}</strong>. Desmarque <em>"Ainda não tenho"</em> para simular diferentes notas.`;
     } else {
       els.neededTitle.textContent = unknownComponents.length === 1
         ? `Você precisa tirar ${formatBR(requiredGradeOnUnknowns, 1)} em ${unknownComponents[0].code} para fechar com 6,0!`
         : `Você precisa de média ${formatBR(requiredGradeOnUnknowns, 1)} nas avaliações pendentes!`;
-      els.neededDescription.innerHTML = `Sua média parcial atual é <strong>${formatBR(currentAverage, 2)}</strong> e faltam <strong>${formatBR(missingWeightedPoints / 10, 2)} pontos</strong> para alcançar 6,00.`;
+      els.neededDescription.innerHTML = `Sua média parcial atual é <strong>${formatBR(currentAverage, 1)}</strong> e faltam <strong>${formatBR(missingWeightedPoints / 10, 1)} pontos</strong> para alcançar 6,0.`;
       els.resultExplanationText.innerHTML = `Para alcançar a Média Final <strong>6,0</strong>, basta tirar nota <strong>${formatBR(requiredGradeOnUnknowns, 1)}</strong> (de 0 a 10) em <strong>${namesList}</strong>.`;
     }
     return;
@@ -442,23 +448,23 @@ function updateHeroResult({
 
   if (diff >= 0) {
     els.goalDiffLabel.textContent = 'Acima da média';
-    els.goalDiffValue.textContent = `+${formatBR(diff, 2)}`;
+    els.goalDiffValue.textContent = `+${formatBR(diff, 1)}`;
   } else {
     els.goalDiffLabel.textContent = 'Faltam p/ 6,0';
-    els.goalDiffValue.textContent = `${formatBR(diff, 2)}`;
+    els.goalDiffValue.textContent = `${formatBR(diff, 1)}`;
   }
 
   if (isGradeApproved) {
     els.resultHeroCard.className = 'result-hero-card status-approved';
     els.resultBadgeText.textContent = 'APROVADO POR NOTA';
     els.resultExplanationText.innerHTML = state.currentModality === 'presencial'
-      ? `🎉 <strong>Parabéns!</strong> Sua Média Final é <strong>${formatBR(currentAverage, 2)}</strong> (atingindo o mínimo de 6,0). Lembre-se apenas de manter a frequência mínima de 75% nas aulas.`
-      : `🎉 <strong>Parabéns!</strong> Sua Média Final na modalidade On-Line é <strong>${formatBR(currentAverage, 2)}</strong>, atingindo o mínimo de 6,0 para aprovação.`;
+      ? `🎉 <strong>Parabéns!</strong> Sua Média Final é <strong>${formatBR(currentAverage, 1)}</strong> (atingindo o mínimo de 6,0). Lembre-se apenas de manter a frequência mínima de 75% nas aulas.`
+      : `🎉 <strong>Parabéns!</strong> Sua Média Final na modalidade On-Line é <strong>${formatBR(currentAverage, 1)}</strong>, atingindo o mínimo de 6,0 para aprovação.`;
   } else {
     els.resultHeroCard.className = 'result-hero-card status-failed';
     els.resultBadgeText.textContent = 'MÉDIA ABAIXO DE 6,0';
     const pointsMissing = Math.abs(diff);
-    els.resultExplanationText.innerHTML = `Sua Média Final simulada está em <strong>${formatBR(currentAverage, 2)}</strong>. Faltam <strong>${formatBR(pointsMissing, 2)} pontos na média</strong> para atingir o mínimo de 6,00. Experimente aumentar as notas nos controles ao lado para simular quanto precisaria!`;
+    els.resultExplanationText.innerHTML = `Sua Média Final simulada está em <strong>${formatBR(currentAverage, 1)}</strong>. Faltam <strong>${formatBR(pointsMissing, 1)} pontos na média</strong> para atingir o mínimo de 6,0. Experimente aumentar as notas nos controles ao lado para simular quanto precisaria!`;
   }
 }
 
@@ -498,8 +504,13 @@ function updateStepByStepBoard(modality, currentGrades) {
   els.formulaSubstitutedNum.innerHTML = substitutedParts.join(' <strong>+</strong> ');
   els.formulaMultipliedNum.innerHTML = multipliedParts.join(' <strong>+</strong> ');
 
-  const finalAvg = sumMultiplied / 10;
-  els.formulaFinalStep.innerHTML = `${formatBR(sumMultiplied, 1)} &divide; 10 = <span>${formatBR(finalAvg, 2)}</span>`;
+  const exactAvg = sumMultiplied / 10;
+  const roundedAvg = roundUniversityAverage(exactAvg);
+  if (Math.abs(exactAvg - roundedAvg) > 1e-9) {
+    els.formulaFinalStep.innerHTML = `${formatBR(sumMultiplied, 1)} &divide; 10 = ${formatBR(exactAvg, 2)} &rarr; <span>${formatBR(roundedAvg, 1)}</span>`;
+  } else {
+    els.formulaFinalStep.innerHTML = `${formatBR(sumMultiplied, 1)} &divide; 10 = <span>${formatBR(roundedAvg, 1)}</span>`;
+  }
 }
 
 /**
