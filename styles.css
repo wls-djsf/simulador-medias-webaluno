@@ -1,0 +1,1489 @@
+:root {
+  /* Paleta Oficial Extraída do Portal WebAluno (UniÍtalo) */
+  --webaluno-teal-primary: #06575B;
+  --webaluno-teal-dark: #043E42;
+  --webaluno-teal-header: #07575E;
+  --webaluno-banner-overlay: #355D5D;
+  --webaluno-emerald-start: #1F554B;
+  --webaluno-emerald-mid: #266D5F;
+  --webaluno-emerald-end: #2E7F70;
+  --webaluno-mint-accent: #5EEAD4;
+  --webaluno-mint-soft: #CCFBF1;
+  --webaluno-aviso-bar: #CCDADA;
+  --webaluno-bg-page: #EFF3F2;
+  --webaluno-bg-card: #FFFFFF;
+  --webaluno-border: #D4E0DF;
+  --webaluno-border-strong: #98B0AF;
+
+  /* Tipografia e Contraste (WCAG AAA/AA) */
+  --text-primary: #132A2C;
+  --text-secondary: #3F5A5C;
+  --text-muted: #617C7E;
+  --text-on-dark: #FFFFFF;
+
+  /* Cores Semânticas de Feedback (IHC - Visibilidade do Status) */
+  --status-success: #15803D;
+  --status-success-bg: #DCFCE7;
+  --status-success-border: #86EFAC;
+
+  --status-warning: #B45309;
+  --status-warning-bg: #FEF3C7;
+  --status-warning-border: #FCD34D;
+
+  --status-danger: #B91C1C;
+  --status-danger-bg: #FEE2E2;
+  --status-danger-border: #FCA5A5;
+
+  /* Cores para Diferenciar Cada Sigla na Conta (Mapeamento Cognitivo) */
+  --tag-nt-bg: #E0F2FE;
+  --tag-nt-text: #0369A1;
+  --tag-nt-border: #7DD3FC;
+
+  --tag-ap-bg: #F3E8FF;
+  --tag-ap-text: #6D28D9;
+  --tag-ap-border: #D8B4FE;
+
+  --tag-af-bg: #DCFCE7;
+  --tag-af-text: #15803D;
+  --tag-af-border: #86EFAC;
+
+  --tag-ai-bg: #FEF3C7;
+  --tag-ai-text: #B45309;
+  --tag-ai-border: #FCD34D;
+
+  --tag-fd-bg: #FFE4E6;
+  --tag-fd-text: #BE123C;
+  --tag-fd-border: #FDA4AF;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 2px 8px rgba(6, 87, 91, 0.08), 0 1px 2px rgba(6, 87, 91, 0.05);
+  --shadow-elevated: 0 10px 25px rgba(6, 87, 91, 0.14);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--webaluno-bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Acessibilidade: Link Pular para o Conteúdo */
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 16px;
+  background: var(--webaluno-teal-dark);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 12px;
+  outline: 3px solid var(--webaluno-mint-accent);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ==========================================================================
+   CABEÇALHO ESTILO WEBALUNO UNIÍTALO
+   ========================================================================== */
+.webaluno-header {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-banner {
+  background:
+    linear-gradient(135deg, rgba(53, 93, 93, 0.94) 0%, rgba(31, 72, 66, 0.96) 55%, rgba(6, 87, 91, 0.96) 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 10px);
+  color: var(--text-on-dark);
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.header-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Brasão estilizado UniÍtalo */
+.crest-badge {
+  width: 46px;
+  height: 52px;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border: 2px solid #d97706;
+  border-radius: 6px 6px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.crest-badge::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #15803d 0%, #15803d 33%, #ffffff 33%, #ffffff 66%, #dc2626 66%, #dc2626 100%);
+}
+
+.crest-top {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #15803d;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.crest-main {
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.portal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cap-icon {
+  width: 38px;
+  height: 38px;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.portal-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.portal-subtitle-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(94, 234, 212, 0.2);
+  color: var(--webaluno-mint-accent);
+  border: 1px solid rgba(94, 234, 212, 0.4);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.portal-tagline {
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.btn-header-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-header-ghost:hover,
+.btn-header-ghost:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: var(--webaluno-mint-accent);
+  outline: none;
+}
+
+/* Faixa Verde-Petróleo Identidade WebAluno (#06575B) */
+.student-Context-bar {
+  background-color: var(--webaluno-teal-primary);
+  color: #FFFFFF;
+  padding: 9px 0;
+  font-size: 0.84rem;
+}
+
+.student-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.student-info-items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.info-sep {
+  opacity: 0.45;
+}
+
+.quick-presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-bar-action {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 4px 11px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-bar-action:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.btn-bar-clear {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   BARRA DE AVISOS ESTILO WEBALUNO (#CCDADA + Caixa #06575B)
+   ========================================================================== */
+.main-content {
+  padding-top: 22px;
+  padding-bottom: 48px;
+  flex: 1;
+}
+
+.aviso-banner {
+  display: flex;
+  align-items: stretch;
+  background-color: var(--webaluno-aviso-bar);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.aviso-icon-box {
+  background-color: var(--webaluno-teal-primary);
+  color: #FFFFFF;
+  width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aviso-content {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.aviso-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--webaluno-teal-primary);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.aviso-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   SELETOR DE MODALIDADE (PRESENCIAL VS ON-LINE)
+   ========================================================================== */
+.modality-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.modality-card {
+  background: var(--webaluno-bg-card);
+  border: 2px solid var(--webaluno-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.modality-card:hover {
+  border-color: var(--webaluno-teal-primary);
+  transform: translateY(-1px);
+}
+
+.modality-card:focus-visible {
+  outline: 3px solid var(--webaluno-teal-primary);
+  outline-offset: 2px;
+}
+
+.modality-card.active {
+  border-color: var(--webaluno-teal-primary);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2FBF9 100%);
+  box-shadow: 0 4px 14px rgba(6, 87, 91, 0.16);
+}
+
+.modality-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modality-icon {
+  font-size: 1.7rem;
+  width: 44px;
+  height: 44px;
+  background: var(--webaluno-bg-page);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modality-card.active .modality-icon {
+  background: #CCFBF1;
+}
+
+.modality-titles {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.modality-name {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modality-badge {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.modality-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--webaluno-border-strong);
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.modality-card.active .modality-check {
+  background: var(--webaluno-teal-primary);
+  border-color: var(--webaluno-teal-primary);
+  color: #FFFFFF;
+}
+
+.modality-formula-preview {
+  background: var(--webaluno-bg-page);
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--webaluno-teal-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--webaluno-teal-dark);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   GRID PRINCIPAL DO SIMULADOR
+   ========================================================================== */
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.inputs-column,
+.results-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cards de Seção no padrão visual WebAluno ("AVISOS DA TURMA" / "AVISOS GERAIS") */
+.section-card {
+  background: var(--webaluno-bg-card);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--webaluno-border);
+  overflow: hidden;
+}
+
+.section-header-bar {
+  background-color: var(--webaluno-teal-header);
+  color: #FFFFFF;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-header-bar h2 {
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.header-helper-badge {
+  font-size: 0.74rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.header-helper-badge.status-ok {
+  background: #DCFCE7;
+  color: #14532D;
+}
+
+.header-helper-badge.status-fail {
+  background: #FEE2E2;
+  color: #7F1D1D;
+}
+
+.section-body {
+  padding: 18px;
+}
+
+.instruction-lead {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  background: #F8FAFA;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--webaluno-emerald-end);
+}
+
+/* ==========================================================================
+   CARDS INDIVIDUAIS DE CADA NOTA (NT, AP, AF, AI, FD)
+   ========================================================================== */
+.grades-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.grade-item-card {
+  border: 1.5px solid var(--webaluno-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  background: #FFFFFF;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.grade-item-card:focus-within {
+  border-color: var(--webaluno-teal-primary);
+  box-shadow: 0 0 0 3px rgba(6, 87, 91, 0.12);
+}
+
+.grade-item-card.is-unknown {
+  background: #FFFBEB;
+  border-color: #F59E0B;
+  border-style: dashed;
+}
+
+.grade-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.grade-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sigla-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 5px 11px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  min-width: 48px;
+  text-align: center;
+}
+
+.sigla-NT { background: var(--tag-nt-bg); color: var(--tag-nt-text); border-color: var(--tag-nt-border); }
+.sigla-AP { background: var(--tag-ap-bg); color: var(--tag-ap-text); border-color: var(--tag-ap-border); }
+.sigla-AF { background: var(--tag-af-bg); color: var(--tag-af-text); border-color: var(--tag-af-border); }
+.sigla-AI { background: var(--tag-ai-bg); color: var(--tag-ai-text); border-color: var(--tag-ai-border); }
+.sigla-FD { background: var(--tag-fd-bg); color: var(--tag-fd-text); border-color: var(--tag-fd-border); }
+
+.grade-name-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.grade-full-name {
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--text-primary);
+}
+
+.grade-weight-explain {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Toggle "Ainda não tenho essa nota" (Para simular quanto falta!) */
+.unknown-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--webaluno-bg-page);
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--webaluno-border);
+  transition: all 0.15s ease;
+}
+
+.unknown-toggle-label:hover {
+  border-color: var(--webaluno-teal-primary);
+}
+
+.unknown-toggle-checkbox {
+  accent-color: var(--webaluno-teal-primary);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.grade-item-card.is-unknown .unknown-toggle-label {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #F59E0B;
+}
+
+/* Linha de Controles da Nota (Botões -/+, Input Numérico, Slider e Pontos na Média) */
+.grade-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.number-stepper {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--webaluno-border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+.btn-step {
+  width: 34px;
+  height: 38px;
+  border: none;
+  background: var(--webaluno-bg-page);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-step:hover:not(:disabled) {
+  background: var(--webaluno-aviso-bar);
+}
+
+.btn-step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.grade-number-input {
+  width: 68px;
+  height: 38px;
+  border: none;
+  border-left: 1px solid var(--webaluno-border);
+  border-right: 1px solid var(--webaluno-border);
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  -moz-appearance: textfield;
+}
+
+.grade-number-input::-webkit-outer-spin-button,
+.grade-number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.grade-number-input:focus {
+  outline: none;
+  background: #F0FDFA;
+}
+
+.slider-wrapper {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.grade-slider {
+  width: 100%;
+  accent-color: var(--webaluno-teal-primary);
+  height: 7px;
+  cursor: pointer;
+}
+
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Pílula de Contribuição Direta na Média */
+.contribution-pill {
+  background: var(--webaluno-bg-page);
+  border: 1px solid var(--webaluno-border);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-align: right;
+  min-width: 128px;
+}
+
+.contribution-pill strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  color: var(--webaluno-teal-primary);
+}
+
+/* Mensagem quando a nota está marcada como "Ainda não tenho" */
+.unknown-placeholder-msg {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: #FEF3C7;
+  color: #92400E;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.grade-item-card.is-unknown .grade-controls-row {
+  display: none;
+}
+
+.grade-item-card.is-unknown .unknown-placeholder-msg {
+  display: flex;
+}
+
+/* ==========================================================================
+   SEÇÃO DE FREQUÊNCIA (75%)
+   ========================================================================== */
+.freq-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--webaluno-bg-page);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+
+.freq-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.freq-tab.active {
+  background: #FFFFFF;
+  color: var(--webaluno-teal-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.freq-slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.freq-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.freq-number-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1.5px solid var(--webaluno-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  background: #FFFFFF;
+}
+
+.freq-number-box input {
+  width: 52px;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: right;
+  color: var(--text-primary);
+}
+
+.freq-number-box input:focus {
+  outline: none;
+}
+
+.unit-symbol {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.freq-scale-marks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.mark-cutoff {
+  color: var(--webaluno-teal-primary);
+  font-weight: 700;
+}
+
+.classes-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.class-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.class-input-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.class-input-group input {
+  height: 38px;
+  border: 1.5px solid var(--webaluno-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.field-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.freq-feedback-box {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+
+.freq-feedback-box.ok {
+  background: var(--status-success-bg);
+  color: #14532D;
+  border-color: var(--status-success-border);
+}
+
+.freq-feedback-box.fail {
+  background: var(--status-danger-bg);
+  color: #7F1D1D;
+  border-color: var(--status-danger-border);
+}
+
+/* ==========================================================================
+   CARD HERO DE RESULTADO (INSPIRADO NO CARD VERDE "AVISOS GERAIS" UNIÍTALO)
+   ========================================================================== */
+.result-hero-card {
+  background: linear-gradient(145deg, var(--webaluno-emerald-start) 0%, var(--webaluno-emerald-mid) 55%, var(--webaluno-emerald-end) 100%);
+  color: #FFFFFF;
+  border-radius: var(--radius-md);
+  padding: 22px;
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.3s ease;
+}
+
+.result-hero-card.status-failed {
+  background: linear-gradient(145deg, #691B1B 0%, #881D1D 55%, #991B1B 100%);
+}
+
+.result-hero-card.status-simulating {
+  background: linear-gradient(145deg, #064E52 0%, #0E6469 55%, #15787E 100%);
+}
+
+.result-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.result-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--webaluno-mint-accent);
+  box-shadow: 0 0 8px var(--webaluno-mint-accent);
+}
+
+.result-hero-card.status-failed .status-dot {
+  background: #FCA5A5;
+  box-shadow: 0 0 8px #FCA5A5;
+}
+
+.result-hero-card.status-simulating .status-dot {
+  background: #FDE047;
+  box-shadow: 0 0 8px #FDE047;
+}
+
+.result-modality-tag {
+  font-size: 0.78rem;
+  opacity: 0.88;
+  font-weight: 600;
+}
+
+.result-score-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.score-caption {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--webaluno-mint-accent);
+  text-transform: uppercase;
+}
+
+.score-number-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.score-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 3.1rem;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #FFFFFF;
+}
+
+.score-max {
+  font-size: 1.1rem;
+  opacity: 0.75;
+  font-weight: 600;
+}
+
+.score-goal-block {
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+}
+
+.goal-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0 6px;
+}
+
+.goal-item + .goal-item {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 14px;
+}
+
+.goal-label {
+  font-size: 0.72rem;
+  opacity: 0.82;
+}
+
+.goal-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* Barra de Progresso Rumo à Meta 6,0 */
+.progress-container {
+  margin-bottom: 18px;
+  padding-top: 8px;
+}
+
+.progress-track {
+  height: 12px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 999px;
+  position: relative;
+  overflow: visible;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #34D399 0%, var(--webaluno-mint-accent) 100%);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.result-hero-card.status-failed .progress-fill {
+  background: linear-gradient(90deg, #F87171 0%, #FCA5A5 100%);
+}
+
+.progress-cutoff-line {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.cutoff-tag {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.result-explanation-text {
+  font-size: 0.93rem;
+  line-height: 1.45;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+}
+
+/* Caixa Especial "Quanto preciso tirar para passar?" */
+.needed-grade-box {
+  margin-top: 14px;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.needed-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.needed-content h3 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--webaluno-teal-primary);
+  margin-bottom: 4px;
+}
+
+.needed-content p {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   QUADRO PEDAGÓGICO: A CONTA PASSO A PASSO
+   ========================================================================== */
+.board-intro {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.math-board {
+  background: #F8FAFA;
+  border: 1.5px solid var(--webaluno-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.math-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--webaluno-border);
+}
+
+.math-step:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.math-step.highlight-step {
+  background: #FFFFFF;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--webaluno-teal-primary);
+}
+
+.math-step-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fraction-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92rem;
+  padding: 4px 0;
+  overflow-x: auto;
+}
+
+.fraction-numerator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.fraction-bar {
+  width: 100%;
+  max-width: 440px;
+  height: 2px;
+  background: var(--text-primary);
+  margin: 4px 0;
+}
+
+.fraction-denominator {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 0.96rem;
+}
+
+.math-term-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.final-equation-row {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--webaluno-teal-primary);
+  text-align: center;
+  background: #CCFBF1;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #5EEAD4;
+}
+
+/* Fatias de Pontos (Decomposição visual de cada nota) */
+.points-breakdown-box {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--webaluno-border);
+}
+
+.breakdown-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.breakdown-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.points-slices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slice-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.slice-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.slice-bar-bg {
+  height: 8px;
+  background: var(--webaluno-bg-page);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.slice-bar-fill {
+  height: 100%;
+  background: var(--webaluno-teal-primary);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+/* ==========================================================================
+   MODAL EDUCATIVO
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(19, 42, 44, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  max-width: 760px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-elevated);
+}
+
+.modal-header-bar {
+  position: sticky;
+  top: 0;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.modal-body {
+  padding: 22px;
+}
+
+.modal-lead {
+  font-size: 0.96rem;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+}
+
+.modal-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.modal-box {
+  background: var(--webaluno-bg-page);
+  border: 1px solid var(--webaluno-border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.modal-box h3 {
+  font-size: 0.98rem;
+  color: var(--webaluno-teal-primary);
+  margin-bottom: 8px;
+}
+
+.modal-formula-tag {
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.modal-list {
+  padding-left: 18px;
+  font-size: 0.84rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.modal-rule-note {
+  font-size: 0.82rem;
+  background: #FFFFFF;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border-left: 3px solid var(--webaluno-teal-primary);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary-teal {
+  background: var(--webaluno-teal-primary);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-primary-teal:hover {
+  background: var(--webaluno-teal-dark);
+}
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+.webaluno-footer {
+  background: var(--webaluno-teal-dark);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 18px 0;
+  font-size: 0.82rem;
+  margin-top: auto;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.footer-sub {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.76rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (MOBILE & TABLET - IHC / UX)
+   ========================================================================== */
+@media (max-width: 960px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modality-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .student-bar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .score-number {
+    font-size: 2.4rem;
+  }
+
+  .classes-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grade-controls-row {
+    gap: 10px;
+  }
+
+  .contribution-pill {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
